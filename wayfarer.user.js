@@ -133,9 +133,7 @@
                         }
                         buttonName = 'wayfarerrtssbutton_d';
                     }
-
                     if (result.edits.length > 0) {
-                        console.log(result.edits)
                         if (result.type == "PHOTO") {
                             document.querySelector('.photo-card__overlay').click();
                         }
@@ -151,8 +149,13 @@
                                 });
                             });
 
-                            //handle location
-                            console.log(result)
+
+                            setTimeout(function () {
+                                const divElement = document.querySelector('div[option-idx="0"]');
+                                if (divElement) {
+                                    divElement.click();
+                                }
+                            }, 1000);
                         }
                     }
 
