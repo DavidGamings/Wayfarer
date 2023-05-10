@@ -8,6 +8,7 @@
 // @updateURL   https://github.com/davidgamings/wayfarer/raw/main/wayfarer.meta.js
 // @grant       none
 // @run-at      document-start
+// @require     https://code.jquery.com/jquery-3.6.0.min.js
 // ==/UserScript==
 
 (() => {
@@ -59,9 +60,12 @@
         })
             .then(response => response.json())
             .then(result => {
-                clickFinal = false;
+                console.log(result);
+                let clickFinal = false;
                 let buttonName = 'wayfarerrtssbutton_1';
                 if (result.review != null) {
+                    var titleElement = document.querySelector('.wf-page-header__title.ng-star-inserted div.ng-star-inserted');
+                    titleElement.textContent = "Beoordelen (" + result.count + " Review gevonden)";
                     // handle normal nomination
                     if (result.categories.length > 0) {
                         const ratings = [
@@ -206,6 +210,7 @@
     }
 
     const handleSubmittedReview = (review, response) => new Promise((resolve, reject) => {
+        console.log(review);
         if (response === 'api.review.post.accepted' && review.hasOwnProperty('id')) {
             fetch('https://wayfarer.test/api/submitted-review?XDEBUG_SESSION_START=PHPSTORM', {
                 method: 'POST',
