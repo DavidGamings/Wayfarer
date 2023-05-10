@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.1.3
+// @version     1.1.4
 // @description Changes the background color of the webpage
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -169,6 +169,7 @@
 
                             // handle location
                             setTimeout(function () {
+                                buttonName = 'wayfarerrtssbutton_0';
                                 const divElement = document.querySelector('div[option-idx="0"]');
                                 if (divElement) {
                                     divElement.click();
@@ -187,6 +188,7 @@
 
                     // handle location
                     setTimeout(function () {
+                        buttonName = 'wayfarerrtssbutton_0';
                         const divElement = document.querySelector('div[option-idx="0"]');
                         if (divElement) {
                             divElement.click();
