@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.1.2
+// @version     1.1.3
 // @description Changes the background color of the webpage
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -63,8 +63,8 @@
                 console.log(result);
                 let clickFinal = false;
                 let buttonName = 'wayfarerrtssbutton_1';
-                
-                if (result.review != null) {      
+
+                if (result.review != null) {
                     var titleElement = document.querySelector('.wf-page-header__title.ng-star-inserted div.ng-star-inserted');
                     if (!result.generated) {
                         titleElement.textContent = "Beoordelen (" + result.count + " Review gevonden)";
@@ -195,14 +195,14 @@
                     }, 1000);
                 }
 
-                if (clickFinal) {
-                    setTimeout(function () {
+                setTimeout(function () {
+                    if (clickFinal) {
                         let button = document.getElementById(buttonName);
                         if (button) {
                             button.click();
                         }
-                    }, 4000);
-                }
+                    }
+                }, 4000);
             })
             .catch(error => {
                 console.error(error);
