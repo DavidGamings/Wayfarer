@@ -64,7 +64,7 @@
                 if (result.review != null) {
                     // handle normal nomination
                     if (result.categories.length > 0) {
-                        var ratings = [
+                        const ratings = [
                             { value: result.review.quality, selector: '.ng-star-inserted ul.wf-rate' },
                             { value: result.review.description, selector: '#title-description-card ul.wf-rate' },
                             { value: result.review.location, selector: '.max-w-full .ng-star-inserted ul.wf-rate' },
@@ -183,9 +183,6 @@
                             clickFinal = true;
                         }
                     }, 1000);
-
-                    // click the final button
-
                 }
 
                 if (clickFinal) {
