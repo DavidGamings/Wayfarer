@@ -59,20 +59,22 @@
         })
             .then(response => response.json())
             .then(result => {
+                clickFinal = false;
+                let buttonName = 'wayfarerrtssbutton_1';
                 if (result.review != null) {
+                    // handle normal nomination
                     if (result.categories.length > 0) {
                         var ratings = [
-                            { category: 'quality', value: result.review.quality, selector: '.ng-star-inserted ul.wf-rate' },
-                            { category: 'description', value: result.review.description, selector: '#title-description-card ul.wf-rate' },
-                            { category: 'location', value: result.review.location, selector: '.max-w-full .ng-star-inserted ul.wf-rate' },
-                            { category: 'cultural', value: result.review.cultural, selector: '#historical-cultural-card ul.wf-rate' },
-                            { category: 'uniqueness', value: result.review.uniqueness, selector: '#visually-unique-card ul.wf-rate' },
-                            { category: 'safety', value: result.review.safety, selector: '#safe-access-card ul.wf-rate' },
-                            //{ category: 'photo', value: result.review.photo, selector: '#title-description-card ul.wf-rate' }
+                            { value: result.review.quality, selector: '.ng-star-inserted ul.wf-rate' },
+                            { value: result.review.description, selector: '#title-description-card ul.wf-rate' },
+                            { value: result.review.location, selector: '.max-w-full .ng-star-inserted ul.wf-rate' },
+                            { value: result.review.cultural, selector: '#historical-cultural-card ul.wf-rate' },
+                            { value: result.review.uniqueness, selector: '#visually-unique-card ul.wf-rate' },
+                            { value: result.review.safety, selector: '#safe-access-card ul.wf-rate' },
                         ];
 
                         ratings.forEach(function (rating) {
-                            selectStar(rating.category, rating.value, rating.selector);
+                            selectStar(rating.value, rating.selector);
                         });
 
 
@@ -95,15 +97,16 @@
                             }
                         });
 
-                        jaButtons.forEach((button) => {
-                            button.parentNode.click();
-                        });
+                        setTimeout(function () {
+                            jaButtons.forEach((button) => {
+                                button.parentNode.click();
+                            });
+                        }, 1000);
                     }
 
-                    let buttonName = 'wayfarerrtssbutton_1';
+                    // handle rejection
                     if (result.review.reject_reason != null) {
-                        selectStar('quality', 1, '.ng-star-inserted ul.wf-rate');
-                        // select the div element that contains the text "Ongepaste Locatie"
+                        selectStar(1, '.ng-star-inserted ul.wf-rate');
                         setTimeout(function () {
                             const divs = document.querySelectorAll('.mat-list-item-content');
                             let category = '';
@@ -123,6 +126,7 @@
                         buttonName = 'wayfarerrtssbutton_r';
                     }
 
+                    // handle duplicate
                     if (result.review.duplicate_of != null) {
                         let marker = document.querySelector('agm-marker[id="' + result.review.duplicate_of + '"]')
                         if (marker) {
@@ -133,13 +137,17 @@
                         }
                         buttonName = 'wayfarerrtssbutton_d';
                     }
+
+                    // handle edit
                     if (result.edits.length > 0) {
+                        // handle photo
                         if (result.type == "PHOTO") {
                             document.querySelector('.photo-card__overlay').click();
                         }
 
+                        // handle edit (title, description and location)
                         if (result.type == "EDIT") {
-                            //handle title
+                            //handle title and description
                             var radioButtons = document.querySelectorAll('.mat-radio-container');
                             radioButtons.forEach((button) => {
                                 result.edits.forEach((hash) => {
@@ -149,7 +157,7 @@
                                 });
                             });
 
-
+                            // handle location
                             setTimeout(function () {
                                 const divElement = document.querySelector('div[option-idx="0"]');
                                 if (divElement) {
@@ -159,12 +167,34 @@
                         }
                     }
 
+                    clickFinal = true;
+                } else {
+                    // handle photo 
+                    if (input.type == "PHOTO") {
+                        document.querySelector('.photo-card__overlay').click();
+                        clickFinal = true;
+                    }
+
+                    // handle location
+                    setTimeout(function () {
+                        const divElement = document.querySelector('div[option-idx="0"]');
+                        if (divElement) {
+                            divElement.click();
+                            clickFinal = true;
+                        }
+                    }, 1000);
+
+                    // click the final button
+
+                }
+
+                if (clickFinal) {
                     setTimeout(function () {
                         let button = document.getElementById(buttonName);
                         if (button) {
                             button.click();
                         }
-                    }, 1000);
+                    }, 4000);
                 }
             })
             .catch(error => {
@@ -172,7 +202,7 @@
             });
     });
 
-    function selectStar(category, value, selector) {
+    function selectStar(value, selector) {
         var ul = document.querySelector(selector);
         var element = ul.getElementsByTagName('li')[value - 1];
         element.click();
