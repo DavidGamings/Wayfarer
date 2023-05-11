@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.1.4
-// @description Changes the background color of the webpage
+// @version     1.2
+// @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
 // @updateURL   https://github.com/davidgamings/wayfarer/raw/main/wayfarer.meta.js
@@ -158,13 +158,9 @@
                         // handle edit (title, description and location)
                         if (result.type == "EDIT") {
                             //handle title and description
-                            var radioButtons = document.querySelectorAll('.mat-radio-container');
-                            radioButtons.forEach((button) => {
-                                result.edits.forEach((hash) => {
-                                    if (button.innerText.includes(hash)) {
-                                        button.parentNode.click();
-                                    }
-                                });
+                            result.edits.forEach((hash) => {
+                                var radioButton = document.querySelector('.mat-radio-input[value="' + hash + '"]');
+                                radioButton.parentNode.click();
                             });
 
                             // handle location
