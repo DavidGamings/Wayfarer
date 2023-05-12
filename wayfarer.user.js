@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.2
+// @version     1.2.1
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -126,6 +126,7 @@
                             if (result.review.reject_reason === "SCHOOL") category = "School (lager/midelbaar)";
                             if (result.review.reject_reason === "TEMPORARY") category = "Tijdelijk of seizoensgebonden display";
                             if (result.review.reject_reason === "NATURAL") category = "Natuurlijk element";
+                            if (result.review.reject_reason === "EMERGENCY") category = "Hindert hulpdiensten";
                             divs.forEach(div => {
                                 const matListText = div.querySelector('.mat-list-text');
                                 if (matListText && matListText.innerHTML.includes(category)) {
@@ -160,7 +161,9 @@
                             //handle title and description
                             result.edits.forEach((hash) => {
                                 var radioButton = document.querySelector('.mat-radio-input[value="' + hash + '"]');
-                                radioButton.parentNode.click();
+                                if (radioButton) {
+                                    radioButton.parentNode.click();
+                                }
                             });
 
                             // handle location
