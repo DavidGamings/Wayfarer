@@ -23,9 +23,6 @@
             else if (url == '/api/v1/vault/properties' && method == 'GET') {
                 this.addEventListener('load', handleXHRResult(handleProfile), false);
             }
-            else if (url == '/api/v1/vault/manage' && method == 'GET') {
-                this.addEventListener('load', handleXHRResult(handleNominations), false);
-            }
             open.apply(this, arguments);
         };
     })(XMLHttpRequest.prototype.open);
