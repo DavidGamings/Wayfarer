@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.3.1
+// @version     1.3.2
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -195,11 +195,20 @@
                     }, 1000);
                 }
 
+                // handle final click
                 setTimeout(function () {
                     if (clickFinal) {
                         let button = document.getElementById(buttonName);
                         if (button) {
                             button.click();
+                        } else {
+                            const buttonNames = ['wayfarerrtssbutton_0', 'wayfarerrtssbutton_d', 'wayfarerrtssbutton_r', 'wayfarerrtssbutton_1'];
+                            buttonNames.forEach(buttonName => {
+                                const button = document.getElementById(buttonName);
+                                if (button) {
+                                    button.click();
+                                }
+                            });
                         }
                     }
                 }, 4000);
