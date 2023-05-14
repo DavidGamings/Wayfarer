@@ -12,6 +12,7 @@
 // ==/UserScript==
 
 (() => {
+    const url = 'https://194.163.159.154:81';
     let profile = null;
     (function (open) {
         XMLHttpRequest.prototype.open = function (method, url) {
@@ -48,7 +49,7 @@
 
     const handleIncomingReview = input => new Promise((resolve, reject) => {
         console.log(input);
-        fetch('https://wayfarer.test/api/incoming-review', {
+        fetch(url + '/api/incoming-review', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -220,7 +221,7 @@
     const handleSubmittedReview = (review, response) => new Promise((resolve, reject) => {
         console.log(review);
         if (response === 'api.review.post.accepted' && review.hasOwnProperty('id')) {
-            fetch('https://wayfarer.test/api/submitted-review', {
+            fetch(url + '/api/submitted-review', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
