@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.2.1
+// @version     1.3
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -48,7 +48,7 @@
 
     const handleIncomingReview = input => new Promise((resolve, reject) => {
         console.log(input);
-        fetch('https://wayfarer.test/api/incoming-review?XDEBUG_SESSION_START=PHPSTORM', {
+        fetch('https://wayfarer.test/api/incoming-review', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -56,7 +56,8 @@
             body: JSON.stringify({
                 result: input,
                 profile: profile,
-            })
+            }),
+            credentials: 'include'
         })
             .then(response => response.json())
             .then(result => {
@@ -219,7 +220,7 @@
     const handleSubmittedReview = (review, response) => new Promise((resolve, reject) => {
         console.log(review);
         if (response === 'api.review.post.accepted' && review.hasOwnProperty('id')) {
-            fetch('https://wayfarer.test/api/submitted-review?XDEBUG_SESSION_START=PHPSTORM', {
+            fetch('https://wayfarer.test/api/submitted-review', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -237,26 +238,6 @@
                     console.error(error);
                 });
         }
-    });
-
-    const handleNominations = result => new Promise((resolve, reject) => {
-        fetch('https://wayfarer.test/api/handle-nominations?XDEBUG_SESSION_START=PHPSTORM', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                result: result,
-                profile: profile,
-            })
-        })
-            .then(response => response.json())
-            .then(result => {
-                console.log(result);
-            })
-            .catch(error => {
-                console.error(error);
-            });
     });
 
     // Get a user ID to properly handle browsers shared between several users. Store a hash only, for privacy.

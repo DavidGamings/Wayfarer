@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.2.1
-// @description Changes the background color of the webpage
+// @version     1.3
+// @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
-// @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.js
+// @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
 // @updateURL   https://github.com/davidgamings/wayfarer/raw/main/wayfarer.meta.js
 // @grant       none
 // @run-at      document-start
