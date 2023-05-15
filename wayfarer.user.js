@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.4.1
+// @version     1.4.2
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -54,8 +54,7 @@
             body: JSON.stringify({
                 result: input,
                 profile: profile,
-            }),
-            credentials: 'include'
+            })
         })
             .then(response => response.json())
             .then(result => {
@@ -64,11 +63,17 @@
                 let buttonName = 'wayfarerrtssbutton_1';
                 var titleElement = document.querySelector('.wf-page-header__title.ng-star-inserted div.ng-star-inserted');
                 if (result.handling_method == 1) {
-                    titleElement.textContent = "Beoordelen (Handmatig beoordeeld door: " + result.account_name + ")";
+                    titleElement.textContent = "Beoordelen (Beoordeeld door " + result.account_name + ")";
                     titleElement.style.color = "green";
                 } else if (result.handling_method == 2) {
                     titleElement.textContent = "Beoordelen (Gegereneerd met data)";
                     titleElement.style.color = "yellow";
+                } else if (result.handling_method == 4) {
+                    titleElement.textContent = "Beoordelen (In de buurt)";
+                    titleElement.style.color = "green";
+                } else if (result.handling_method == 5) {
+                    titleElement.textContent = "Beoordelen (Gegereneerd met andere reden)";
+                    titleElement.style.color = "purple";
                 } else {
                     titleElement.textContent = "Beoordelen (Handmatig)";
                     titleElement.style.color = "red";
@@ -220,6 +225,9 @@
                 }, 5000);
             })
             .catch(error => {
+                var titleElement = document.querySelector('.wf-page-header__title.ng-star-inserted div.ng-star-inserted');
+                titleElement.textContent = error;
+                titleElement.style.color = "Red";
                 console.error(error);
             });
     });
