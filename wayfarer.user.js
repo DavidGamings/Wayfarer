@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.4.3
+// @version     1.4.4
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -273,7 +273,8 @@
         const h2Element = document.querySelector('h2');
         const linkElement = document.createElement('a');
         linkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        linkElement.textContent = h2Element.textContent;
+        linkElement.textContent = "Update WayfarerApp";
+        linkElement.className = "wf-button wf-button--primary wf-button--large";
         h2Element.parentNode.replaceChild(linkElement, h2Element);
     };
 
