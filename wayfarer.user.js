@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.4
+// @version     1.4.1
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -130,6 +130,7 @@
                             if (result.review.reject_reason === "TEMPORARY") category = "Tijdelijk of seizoensgebonden display";
                             if (result.review.reject_reason === "NATURAL") category = "Natuurlijk element";
                             if (result.review.reject_reason === "EMERGENCY") category = "Hindert hulpdiensten";
+                            if (result.review.reject_reason === "SENSITIVE") category = "Gevoelige locatie";
                             divs.forEach(div => {
                                 const matListText = div.querySelector('.mat-list-text');
                                 if (matListText && matListText.innerHTML.includes(category)) {
