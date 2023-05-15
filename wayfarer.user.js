@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.4.4
+// @version     1.4.5
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -271,12 +271,24 @@
 
     const setUpdateButton = ({ socialProfile }) => {
         const h2Element = document.querySelector('h2');
-        const linkElement = document.createElement('a');
-        linkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        linkElement.textContent = "Update WayfarerApp";
-        linkElement.className = "wf-button wf-button--primary wf-button--large";
-        h2Element.parentNode.replaceChild(linkElement, h2Element);
-    };
+        const updateLinkElement = document.createElement('a');
+
+        updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
+        updateLinkElement.textContent = 'Update WayfarerApp';
+        updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
+
+        const anotherLinkElement = document.createElement('a');
+        anotherLinkElement.href = 'https://194.163.159.154';
+        anotherLinkElement.textContent = 'Ga naar 194.163.159.154';
+        anotherLinkElement.className = 'wf-button wf-button--secondary wf-button--large';
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'button-container';
+        buttonContainer.appendChild(updateLinkElement);
+        buttonContainer.appendChild(anotherLinkElement);
+        h2Element.parentNode.replaceChild(buttonContainer, h2Element);
+      };
+      
 
     // Perform validation on result to ensure the request was successful before it's processed further.
     // If validation passes, passes the result to callback function.
