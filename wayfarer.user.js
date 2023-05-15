@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.3.4
+// @version     1.4
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -73,7 +73,7 @@
                     titleElement.textContent = "Beoordelen (Handmatig)";
                     titleElement.style.color = "red";
                 }
-                
+
                 if (result.review != null) {
                     // handle normal nomination
                     if (result.review.quality > 1) {
@@ -206,16 +206,17 @@
                         if (button) {
                             button.click();
                         } else {
-                            const buttonNames = ['wayfarerrtssbutton_0', 'wayfarerrtssbutton_d', 'wayfarerrtssbutton_r', 'wayfarerrtssbutton_1'];
-                            buttonNames.forEach(buttonName => {
-                                const button = document.getElementById(buttonName);
-                                if (button) {
+                            var buttons = document.querySelectorAll('.wf-split-button__main');
+                            var smartSubmitClicked = false;
+                            buttons.forEach(function (button) {
+                                if (!smartSubmitClicked && button.textContent.includes('Smart Submit')) {
                                     button.click();
+                                    smartSubmitClicked = true;
                                 }
                             });
                         }
                     }
-                }, 4000);
+                }, 5000);
             })
             .catch(error => {
                 console.error(error);
