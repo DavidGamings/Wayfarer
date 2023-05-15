@@ -226,7 +226,7 @@
             })
             .catch(error => {
                 var titleElement = document.querySelector('.wf-page-header__title.ng-star-inserted div.ng-star-inserted');
-                titleElement.textContent = error;
+                titleElement.textContent = "WayfarerApp werkt niet: " + error;
                 titleElement.style.color = "Red";
                 console.error(error);
             });
