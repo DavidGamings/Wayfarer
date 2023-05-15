@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.3.3
+// @version     1.3.4
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -62,15 +62,19 @@
                 console.log(result);
                 let clickFinal = false;
                 let buttonName = 'wayfarerrtssbutton_1';
-
+                var titleElement = document.querySelector('.wf-page-header__title.ng-star-inserted div.ng-star-inserted');
+                if (result.handling_method == 1) {
+                    titleElement.textContent = "Beoordelen (Handmatig beoordeeld door: " + result.account_name + ")";
+                    titleElement.style.color = "green";
+                } else if (result.handling_method == 2) {
+                    titleElement.textContent = "Beoordelen (Gegereneerd met data)";
+                    titleElement.style.color = "yellow";
+                } else {
+                    titleElement.textContent = "Beoordelen (Handmatig)";
+                    titleElement.style.color = "red";
+                }
+                
                 if (result.review != null) {
-                    var titleElement = document.querySelector('.wf-page-header__title.ng-star-inserted div.ng-star-inserted');
-                    if (!result.generated) {
-                        titleElement.textContent = "Beoordelen (" + result.count + " Review gevonden)";
-                    } else {
-                        titleElement.textContent = "Beoordelen (Gegereneerd)";
-                    }
-
                     // handle normal nomination
                     if (result.review.quality > 1) {
                         const ratings = [
