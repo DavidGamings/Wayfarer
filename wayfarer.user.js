@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.4.2
+// @version     1.4.3
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -22,6 +22,9 @@
             }
             else if (url == '/api/v1/vault/properties' && method == 'GET') {
                 this.addEventListener('load', handleXHRResult(handleProfile), false);
+            }
+            else if (url == '/api/v1/vault/home' && method == 'GET') {
+                this.addEventListener('load', handleXHRResult(setUpdateButton), false);
             }
             open.apply(this, arguments);
         };
@@ -264,6 +267,14 @@
     // Get a user ID to properly handle browsers shared between several users. Store a hash only, for privacy.
     const handleProfile = ({ socialProfile }) => {
         profile = socialProfile;
+    };
+
+    const setUpdateButton = ({ socialProfile }) => {
+        const h2Element = document.querySelector('h2');
+        const linkElement = document.createElement('a');
+        linkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
+        linkElement.textContent = h2Element.textContent;
+        h2Element.parentNode.replaceChild(linkElement, h2Element);
     };
 
     // Perform validation on result to ensure the request was successful before it's processed further.
