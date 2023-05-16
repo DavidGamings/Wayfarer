@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.5
+// @version     1.5.1
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -70,7 +70,7 @@
                     titleElement.style.color = "green";
                 } else if (result.handling_method == 2) {
                     titleElement.textContent = "Beoordelen (Gegereneerd met data)";
-                    titleElement.style.color = "yellow";
+                    titleElement.style.color = "orange";
                 } else if (result.handling_method == 4) {
                     titleElement.textContent = "Beoordelen (In de buurt)";
                     titleElement.style.color = "green";
