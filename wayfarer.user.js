@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.5.1
+// @version     1.5.2
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -100,13 +100,14 @@
 
 
                         const toggleGroups = document.querySelectorAll('mat-button-toggle-group');
+                        const neeButtons = [];
                         const jaButtons = [];
 
                         toggleGroups.forEach((group) => {
                             const neeButtons = group.querySelectorAll('button.mat-button-toggle-button span.mat-button-toggle-label-content');
                             neeButtons.forEach((button) => {
                                 if (button.innerText === 'Nee') {
-                                    button.parentNode.click();
+                                    neeButtons.push(button);
                                 }
                             });
 
@@ -119,10 +120,16 @@
                         });
 
                         setTimeout(function () {
-                            jaButtons.forEach((button) => {
+                            neeButtons.forEach((button) => {
                                 button.parentNode.click();
                             });
                         }, 1000);
+
+                        setTimeout(function () {
+                            jaButtons.forEach((button) => {
+                                button.parentNode.click();
+                            });
+                        }, 2000);
                     }
 
                     // handle rejection
@@ -139,6 +146,7 @@
                             if (result.review.reject_reason === "NATURAL") category = "Natuurlijk element";
                             if (result.review.reject_reason === "EMERGENCY") category = "Hindert hulpdiensten";
                             if (result.review.reject_reason === "SENSITIVE") category = "Gevoelige locatie";
+                            if (result.review.reject_reason === "PHOTO_BAD") category = "Foto van lage kwaliteit";
                             divs.forEach(div => {
                                 const matListText = div.querySelector('.mat-list-text');
                                 if (matListText && matListText.innerHTML.includes(category)) {
