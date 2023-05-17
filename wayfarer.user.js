@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.5.3
+// @version     1.5.5
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -100,33 +100,33 @@
 
 
                         const toggleGroups = document.querySelectorAll('mat-button-toggle-group');
-                        const neeButtons = [];
-                        const jaButtons = [];
+                        const neeButtonsArray = [];
+                        const jaButtonsArray = [];
 
                         toggleGroups.forEach((group) => {
                             const neeButtons = group.querySelectorAll('button.mat-button-toggle-button span.mat-button-toggle-label-content');
                             neeButtons.forEach((button) => {
                                 if (button.innerText === 'Nee') {
-                                    neeButtons.push(button);
+                                    neeButtonsArray.push(button);
                                 }
                             });
 
                             if (result.categories.some(category => group.innerText.includes(category))) {
                                 const jaButton = group.querySelector('button.mat-button-toggle-button span.mat-button-toggle-label-content');
                                 if (jaButton && jaButton.innerText === 'Ja') {
-                                    jaButtons.push(jaButton);
+                                    jaButtonsArray.push(jaButton);
                                 }
                             }
                         });
 
                         setTimeout(function () {
-                            neeButtons.forEach((button) => {
+                            neeButtonsArray.forEach((button) => {
                                 button.parentNode.click();
                             });
                         }, 1000);
 
                         setTimeout(function () {
-                            jaButtons.forEach((button) => {
+                            jaButtonsArray.forEach((button) => {
                                 button.parentNode.click();
                             });
                         }, 5000);
