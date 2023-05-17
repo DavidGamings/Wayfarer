@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.6.1
+// @version     1.6.3
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -78,6 +78,9 @@
                 } else if (result.handling_method == 5) {
                     titleElement.textContent = "Beoordelen (Gegereneerd met andere reden)";
                     titleElement.style.color = "purple";
+                } else if (result.handling_method == 6) {
+                    titleElement.textContent = "Beoordelen (Gegereneerd handmatige data)";
+                    titleElement.style.color = "lightgreen";
                 } else {
                     titleElement.textContent = "Beoordelen (Handmatig)";
                     titleElement.style.color = "red";
@@ -148,6 +151,7 @@
                             if (result.review.reject_reason === "EMERGENCY") category = "Hindert hulpdiensten";
                             if (result.review.reject_reason === "SENSITIVE") category = "Gevoelige locatie";
                             if (result.review.reject_reason === "PHOTO_BAD") category = "Foto van lage kwaliteit";
+                            if (result.review.reject_reason === "ANIMALS") category = "Levend dier";
                             divs.forEach(div => {
                                 const matListText = div.querySelector('.mat-list-text');
                                 if (matListText && matListText.innerHTML.includes(category)) {
