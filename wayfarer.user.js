@@ -1,18 +1,19 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.5.6
+// @version     1.6.0
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
 // @updateURL   https://github.com/davidgamings/wayfarer/raw/main/wayfarer.meta.js
-// @grant       none
+// @grant       GM.cookie
 // @run-at      document-start
 // ==/UserScript==
 
 (() => {
     const url = 'https://wayfarerapp.nl';
     let profile = null;
+    let session = null;
     (function (open) {
         XMLHttpRequest.prototype.open = function (method, url) {
             const args = this;
@@ -56,6 +57,7 @@
             body: JSON.stringify({
                 result: input,
                 profile: profile,
+                session: session,
             })
         })
             .then(response => response.json())
@@ -274,6 +276,9 @@
     // Get a user ID to properly handle browsers shared between several users. Store a hash only, for privacy.
     const handleProfile = ({ socialProfile }) => {
         profile = socialProfile;
+        GM.cookie.list({ name: 'SESSION' }).then(function (cookie) {
+            session = cookie[0].value;
+        });
     };
 
     const setUpdateButton = () => {
@@ -283,8 +288,8 @@
         updateLinkElement.textContent = 'Update WayfarerApp';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
-      };
-      
+    };
+
 
     // Perform validation on result to ensure the request was successful before it's processed further.
     // If validation passes, passes the result to callback function.
