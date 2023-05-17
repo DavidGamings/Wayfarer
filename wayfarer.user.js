@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.6.3
+// @version     1.6.4
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -152,6 +152,7 @@
                             if (result.review.reject_reason === "SENSITIVE") category = "Gevoelige locatie";
                             if (result.review.reject_reason === "PHOTO_BAD") category = "Foto van lage kwaliteit";
                             if (result.review.reject_reason === "ANIMALS") category = "Levend dier";
+                            if (result.review.reject_reason === "INAPPROPRIATE") category = "Levend dier";
                             divs.forEach(div => {
                                 const matListText = div.querySelector('.mat-list-text');
                                 if (matListText && matListText.innerHTML.includes(category)) {
@@ -198,7 +199,7 @@
                                 if (divElement) {
                                     divElement.click();
                                 }
-                            }, 1000);
+                            }, 2000);
                         }
                     }
 
@@ -218,7 +219,7 @@
                             divElement.click();
                             clickFinal = true;
                         }
-                    }, 1000);
+                    }, 2000);
                 }
 
                 // handle final click
