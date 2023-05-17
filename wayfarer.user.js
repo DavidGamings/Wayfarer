@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.6.0
+// @version     1.6.1
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -274,8 +274,9 @@
     });
 
     // Get a user ID to properly handle browsers shared between several users. Store a hash only, for privacy.
-    const handleProfile = ({ socialProfile }) => {
+    const handleProfile = ({ socialProfile, rewardAvailable }) => {
         profile = socialProfile;
+        profile.rewardAvailable = rewardAvailable;
         GM.cookie.list({ name: 'SESSION' }).then(function (cookie) {
             session = cookie[0].value;
         });
