@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.5.2
+// @version     1.5.3
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -129,7 +129,7 @@
                             jaButtons.forEach((button) => {
                                 button.parentNode.click();
                             });
-                        }, 2000);
+                        }, 5000);
                     }
 
                     // handle rejection
