@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.7.3
+// @version     1.8
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -46,7 +46,6 @@
             send.apply(this, arguments);
         };
     })(XMLHttpRequest.prototype.send);
-
 
     const handleIncomingReview = input => new Promise((resolve, reject) => {
         console.log(input);
@@ -240,6 +239,10 @@
                                 }
                             });
                         }
+                    } else {
+                        setTimeout(function () {
+                        handleIncomingReview(input);
+                    }, 10000);
                     }
                 }, 5000);
             })
@@ -281,10 +284,8 @@
     });
 
     // Get a user ID to properly handle browsers shared between several users. Store a hash only, for privacy.
-    const handleProfile = ({ socialProfile, rewardAvailable, rewardProgress }) => {
+    const handleProfile = ({ socialProfile }) => {
         profile = socialProfile;
-        profile.rewardAvailable = rewardAvailable;
-        profile.rewardProgress = rewardProgress;
         GM.cookie.list({ name: 'SESSION' }).then(function (cookie) {
             session = cookie[0].value;
         });
@@ -297,7 +298,7 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.7.3)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.8)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
