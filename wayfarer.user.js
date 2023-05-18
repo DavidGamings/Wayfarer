@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.6.4
+// @version     1.7
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -14,6 +14,7 @@
     const url = 'https://wayfarerapp.nl';
     let profile = null;
     let session = null;
+    let x_csrf_token = null;
     (function (open) {
         XMLHttpRequest.prototype.open = function (method, url) {
             const args = this;
@@ -58,6 +59,7 @@
                 result: input,
                 profile: profile,
                 session: session,
+                x_csrf_token: x_csrf_token,
             })
         })
             .then(response => response.json())
@@ -141,7 +143,7 @@
                         selectStar(1, '.ng-star-inserted ul.wf-rate');
                         setTimeout(function () {
                             const divs = document.querySelectorAll('.mat-list-item-content');
-                            let category = '';
+                            let category = 'CRITERIA';
                             if (result.review.reject_reason === "CRITERIA") category = "Andere afwijzingscriteria";
                             if (result.review.reject_reason === "PRIVATE") category = "Private eigendom of boerderij";
                             if (result.review.reject_reason === "TEXT_BAD") category = "Titel of beschrijving";
@@ -152,7 +154,7 @@
                             if (result.review.reject_reason === "SENSITIVE") category = "Gevoelige locatie";
                             if (result.review.reject_reason === "PHOTO_BAD") category = "Foto van lage kwaliteit";
                             if (result.review.reject_reason === "ANIMALS") category = "Levend dier";
-                            if (result.review.reject_reason === "INAPPROPRIATE") category = "Levend dier";
+                            if (result.review.reject_reason === "INAPPROPRIATE") category = "Ongepaste locatie";
                             divs.forEach(div => {
                                 const matListText = div.querySelector('.mat-list-text');
                                 if (matListText && matListText.innerHTML.includes(category)) {
@@ -284,6 +286,9 @@
         profile.rewardAvailable = rewardAvailable;
         GM.cookie.list({ name: 'SESSION' }).then(function (cookie) {
             session = cookie[0].value;
+        });
+        GM.cookie.list({ name: 'XSRF-TOKEN' }).then(function (cookie) {
+            x_csrf_token = cookie[0].value;
         });
     };
 
