@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.8
+// @version     1.8.1
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -47,6 +47,7 @@
         };
     })(XMLHttpRequest.prototype.send);
 
+    let count = 0;
     const handleIncomingReview = input => new Promise((resolve, reject) => {
         console.log(input);
         fetch(url + '/api/incoming-review', {
@@ -99,10 +100,11 @@
                             { value: result.review.safety, selector: '#safe-access-card ul.wf-rate' },
                         ];
 
-                        ratings.forEach(function (rating) {
-                            selectStar(rating.value, rating.selector);
-                        });
-
+                        setTimeout(function () {
+                            ratings.forEach(function (rating) {
+                                selectStar(rating.value, rating.selector);
+                            });
+                        }, 2000);
 
                         const toggleGroups = document.querySelectorAll('mat-button-toggle-group');
                         const neeButtonsArray = [];
@@ -128,13 +130,13 @@
                             neeButtonsArray.forEach((button) => {
                                 button.parentNode.click();
                             });
-                        }, 1000);
+                        }, 3000);
 
                         setTimeout(function () {
                             jaButtonsArray.forEach((button) => {
                                 button.parentNode.click();
                             });
-                        }, 2000);
+                        }, 5000);
                     }
 
                     // handle rejection
@@ -160,7 +162,7 @@
                                     div.click();
                                 }
                             });
-                        }, 1000);
+                        }, 3000);
                         buttonName = 'wayfarerrtssbutton_r';
                     }
 
@@ -186,12 +188,14 @@
                         // handle edit (title, description and location)
                         if (result.type == "EDIT") {
                             //handle title and description
-                            result.edits.forEach((hash) => {
-                                var radioButton = document.querySelector('.mat-radio-input[value="' + hash + '"]');
-                                if (radioButton) {
-                                    radioButton.parentNode.click();
-                                }
-                            });
+                            setTimeout(function () {
+                                result.edits.forEach((hash) => {
+                                    var radioButton = document.querySelector('.mat-radio-input[value="' + hash + '"]');
+                                    if (radioButton) {
+                                        radioButton.parentNode.click();
+                                    }
+                                });
+                            }, 3000);
 
                             // handle location
                             setTimeout(function () {
@@ -200,7 +204,7 @@
                                 if (divElement) {
                                     divElement.click();
                                 }
-                            }, 2000);
+                            }, 4000);
                         }
                     }
 
@@ -208,8 +212,10 @@
                 } else {
                     // handle photo 
                     if (input.type == "PHOTO") {
-                        document.querySelector('.photo-card__overlay').click();
-                        clickFinal = true;
+                        setTimeout(function () {
+                            document.querySelector('.photo-card__overlay').click();
+                            clickFinal = true;
+                        }, 2000);
                     }
 
                     // handle location
@@ -220,7 +226,7 @@
                             divElement.click();
                             clickFinal = true;
                         }
-                    }, 2000);
+                    }, 3000);
                 }
 
                 // handle final click
@@ -240,11 +246,23 @@
                             });
                         }
                     } else {
-                        setTimeout(function () {
-                        handleIncomingReview(input);
-                    }, 10000);
+                        if (count == 10) {
+                            var buttons = document.querySelectorAll('button.ng-star-inserted');
+                            var skipClicked = false;
+                            buttons.forEach(function (button) {
+                                if (!skipClicked && button.textContent.includes('Overslaan')) {
+                                    button.click();
+                                    skipClicked = true;
+                                }
+                            });
+                        } else {
+                            count++;
+                            setTimeout(function () {
+                                handleIncomingReview(input);
+                            }, 12000);
+                        }
                     }
-                }, 5000);
+                }, 7000);
             })
             .catch(error => {
                 var titleElement = document.querySelector('.wf-page-header__title.ng-star-inserted div.ng-star-inserted');
@@ -298,7 +316,7 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.8)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.8.1)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
