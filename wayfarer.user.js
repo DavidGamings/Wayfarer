@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.8.1
+// @version     1.8.2
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -168,13 +168,15 @@
 
                     // handle duplicate
                     if (result.review.duplicate_of != null) {
-                        let marker = document.querySelector('agm-marker[id="' + result.review.duplicate_of + '"]')
-                        if (marker) {
-                            const button = marker.querySelector('button');
-                            if (button) {
-                                button.click();
+                        setTimeout(function () {
+                            let marker = document.querySelector('agm-marker[id="' + result.review.duplicate_of + '"]')
+                            if (marker) {
+                                const button = marker.querySelector('button');
+                                if (button) {
+                                    button.click();
+                                }
                             }
-                        }
+                        }, 3000);
                         buttonName = 'wayfarerrtssbutton_d';
                     }
 
@@ -316,7 +318,7 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.8.1)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.8.2)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
