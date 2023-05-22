@@ -252,22 +252,22 @@
                             });
                         }
                     } else {
-                        if (count == 10) {
-                            var buttons = document.querySelectorAll('button.ng-star-inserted');
-                            var skipClicked = false;
-                            buttons.forEach(function (button) {
-                                if (!skipClicked && button.textContent.includes('Overslaan')) {
-                                    button.click();
-                                    skipClicked = true;
-                                }
-                            });
-                        } else {
-                            count++;
-                            setTimeout(function () {
-                                input.retry = true;
-                                handleIncomingReview(input);
-                            }, 12000);
-                        }
+                        // if (count == 10) {
+                        //     var buttons = document.querySelectorAll('button.ng-star-inserted');
+                        //     var skipClicked = false;
+                        //     buttons.forEach(function (button) {
+                        //         if (!skipClicked && button.textContent.includes('Overslaan')) {
+                        //             button.click();
+                        //             skipClicked = true;
+                        //         }
+                        //     });
+                        // } else {
+                        //     count++;
+                        //     setTimeout(function () {
+                        //         input.first = false;
+                        //         handleIncomingReview(input);
+                        //     }, 12000);
+                        // }
                     }
                 }, 7000);
             })
@@ -323,7 +323,7 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.8.5)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.8.6)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
