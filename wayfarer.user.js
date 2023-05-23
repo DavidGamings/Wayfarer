@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.8.5
+// @version     1.9
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -48,6 +48,7 @@
     })(XMLHttpRequest.prototype.send);
 
     let count = 0;
+    let timer = null;
     const handleIncomingReview = input => new Promise((resolve, reject) => {
         console.log(input);
         fetch(url + '/api/incoming-review', {
@@ -185,8 +186,8 @@
                         // handle photo
                         if (result.type == "PHOTO") {
                             setTimeout(function () {
-                            document.querySelector('.photo-card__overlay').click();
-                        }, 2000);
+                                document.querySelector('.photo-card__overlay').click();
+                            }, 2000);
                         }
 
                         // handle edit (title, description and location)
@@ -252,22 +253,22 @@
                             });
                         }
                     } else {
-                        // if (count == 10) {
-                        //     var buttons = document.querySelectorAll('button.ng-star-inserted');
-                        //     var skipClicked = false;
-                        //     buttons.forEach(function (button) {
-                        //         if (!skipClicked && button.textContent.includes('Overslaan')) {
-                        //             button.click();
-                        //             skipClicked = true;
-                        //         }
-                        //     });
-                        // } else {
-                        //     count++;
-                        //     setTimeout(function () {
-                        //         input.first = false;
-                        //         handleIncomingReview(input);
-                        //     }, 12000);
-                        // }
+                        if (count == 10) {
+                            var buttons = document.querySelectorAll('button.ng-star-inserted');
+                            var skipClicked = false;
+                            buttons.forEach(function (button) {
+                                if (!skipClicked && button.textContent.includes('Overslaan')) {
+                                    button.click();
+                                    skipClicked = true;
+                                }
+                            });
+                        } else {
+                            count++;
+                            timer = setTimeout(function () {
+                                input.first = false;
+                                handleIncomingReview(input);
+                            }, 12000);
+                        }
                     }
                 }, 7000);
             })
@@ -288,6 +289,8 @@
     const handleSubmittedReview = (review, response) => new Promise((resolve, reject) => {
         console.log(review);
         if (response === 'api.review.post.accepted' && review.hasOwnProperty('id')) {
+            clearTimeout(timer);
+
             fetch(url + '/api/submitted-review', {
                 method: 'POST',
                 headers: {
@@ -323,7 +326,7 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.8.6)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
