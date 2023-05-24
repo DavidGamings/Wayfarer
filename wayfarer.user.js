@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.9.5
+// @version     1.9.6
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -49,6 +49,7 @@
 
     let count = 0;
     let timer = null;
+    let timer2 = null;
     let random = false;
     const handleIncomingReview = input => new Promise((resolve, reject) => {
         random = false;
@@ -243,7 +244,7 @@
                     if (clickFinal) {
                         handleFinalClick(buttonName);
                     } else {
-                        if (count == 5) {
+                        if (count == 3) {
                             // var buttons = document.querySelectorAll('button.ng-star-inserted');
                             // var skipClicked = false;
                             // buttons.forEach(function (button) {
@@ -254,7 +255,7 @@
                             // });
 
                             selectStar(1, '.ng-star-inserted ul.wf-rate');
-                            setTimeout(function () {
+                            timer2 = setTimeout(function () {
                                 const divs = document.querySelectorAll('.mat-list-item-content');
                                 divs.forEach(div => {
                                     const matListText = div.querySelector('.mat-list-text');
@@ -310,7 +311,7 @@
         console.log(review);
         if (response === 'api.review.post.accepted' && review.hasOwnProperty('id')) {
             clearTimeout(timer);
-
+            clearTimeout(timer2);
             fetch(url + '/api/submitted-review', {
                 method: 'POST',
                 headers: {
@@ -347,7 +348,7 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9.5)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9.6)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
