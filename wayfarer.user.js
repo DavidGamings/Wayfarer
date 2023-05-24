@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.9.4
+// @version     1.9.5
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -244,15 +244,14 @@
                         handleFinalClick(buttonName);
                     } else {
                         if (count == 5) {
-                            var buttons = document.querySelectorAll('button.ng-star-inserted');
-                            var skipClicked = false;
-                            buttons.forEach(function (button) {
-                                if (!skipClicked && button.textContent.includes('Overslaan')) {
-                                    button.click();
-                                    skipClicked = true;
-                                }
-                            });
-
+                            // var buttons = document.querySelectorAll('button.ng-star-inserted');
+                            // var skipClicked = false;
+                            // buttons.forEach(function (button) {
+                            //     if (!skipClicked && button.textContent.includes('Overslaan')) {
+                            //         button.click();
+                            //         skipClicked = true;
+                            //     }
+                            // });
 
                             selectStar(1, '.ng-star-inserted ul.wf-rate');
                             setTimeout(function () {
@@ -348,7 +347,7 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9.4)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9.5)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
