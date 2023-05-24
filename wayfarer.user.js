@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.9
+// @version     1.9.1
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -49,6 +49,7 @@
 
     let count = 0;
     let timer = null;
+    random = false;
     const handleIncomingReview = input => new Promise((resolve, reject) => {
         console.log(input);
         fetch(url + '/api/incoming-review', {
@@ -239,19 +240,7 @@
                 // handle final click
                 setTimeout(function () {
                     if (clickFinal) {
-                        let button = document.getElementById(buttonName);
-                        if (button) {
-                            button.click();
-                        } else {
-                            var buttons = document.querySelectorAll('.wf-split-button__main');
-                            var smartSubmitClicked = false;
-                            buttons.forEach(function (button) {
-                                if (!smartSubmitClicked && button.textContent.includes('Smart Submit')) {
-                                    button.click();
-                                    smartSubmitClicked = true;
-                                }
-                            });
-                        }
+                        handleFinalClick(buttonName);
                     } else {
                         if (count == 10) {
                             var buttons = document.querySelectorAll('button.ng-star-inserted');
@@ -262,10 +251,25 @@
                                     skipClicked = true;
                                 }
                             });
+
+
+                            selectStar(1, '.ng-star-inserted ul.wf-rate');
+                            setTimeout(function () {
+                                const divs = document.querySelectorAll('.mat-list-item-content');
+                                divs.forEach(div => {
+                                    const matListText = div.querySelector('.mat-list-text');
+                                    if (matListText && matListText.innerHTML.includes('Andere afwijzingscriteria')) {
+                                        div.click();
+                                    }
+                                });
+                            }, 2000);
+                            random = true;
+                            timer = setTimeout(function () {
+                                handleFinalClick('wayfarerrtssbutton_r');
+                            }, 4000);
                         } else {
                             count++;
                             timer = setTimeout(function () {
-                                input.first = false;
                                 handleIncomingReview(input);
                             }, 12000);
                         }
@@ -286,6 +290,22 @@
         element.click();
     }
 
+    function handleFinalClick(buttonName) {
+        let button = document.getElementById(buttonName);
+        if (button) {
+            button.click();
+        } else {
+            var buttons = document.querySelectorAll('.wf-split-button__main');
+            var smartSubmitClicked = false;
+            buttons.forEach(function (button) {
+                if (!smartSubmitClicked && button.textContent.includes('Smart Submit')) {
+                    button.click();
+                    smartSubmitClicked = true;
+                }
+            });
+        }
+    }
+
     const handleSubmittedReview = (review, response) => new Promise((resolve, reject) => {
         console.log(review);
         if (response === 'api.review.post.accepted' && review.hasOwnProperty('id')) {
@@ -299,6 +319,7 @@
                 body: JSON.stringify({
                     result: review,
                     profile: profile,
+                    random: random
                 })
             })
                 .then(response => response.json())
@@ -326,7 +347,7 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9.1)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
