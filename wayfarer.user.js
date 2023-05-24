@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.9.3
+// @version     1.9.4
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -51,6 +51,7 @@
     let timer = null;
     let random = false;
     const handleIncomingReview = input => new Promise((resolve, reject) => {
+        random = false;
         console.log(input);
         fetch(url + '/api/incoming-review', {
             method: 'POST',
@@ -347,7 +348,7 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9.3)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9.4)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
