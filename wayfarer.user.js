@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.9.8
+// @version     1.9.9
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -11,38 +11,6 @@
 // ==/UserScript==
 
 (() => {
-    document.addEventListener('DOMContentLoaded', function () {
-        if (window.location.href === 'https://wayfarer.nianticlabs.com/new/captcha') {
-            setTimeout(function () {
-                var iframeSrc = document.querySelector('iframe').src;
-                var regex = /k=([^&]+)/;
-                var match = regex.exec(iframeSrc);
-                var kValue = match && match[1];
-                fetch(url + '/api/captcha', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        k_value: kValue,
-                    })
-                })
-                    .then(response => response.json())
-                    .then(result => {
-                        console.log('success')
-                        ___grecaptcha_cfg.clients['0']['Z']['Z']['callback'](result)
-                        setTimeout(function () {
-                            window.location.href = "https://wayfarer.nianticlabs.com/new/review";
-                        }, 2000);
-                    })
-                    .catch(error => {
-                        console.log('error')
-                        console.error(error);
-                    });
-            }, 2000);
-        }
-    });
-
     const url = 'https://wayfarerapp.nl';
     let profile = null;
     let session = null;
@@ -381,9 +349,40 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9.7)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9.9)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
+    };
+
+    const handleCaptcha = () => {
+        setTimeout(function () {
+            var iframeSrc = document.querySelector('iframe').src;
+            var regex = /k=([^&]+)/;
+            var match = regex.exec(iframeSrc);
+            var kValue = match && match[1];
+            console.log('Captcha activated')
+            fetch(url + '/api/captcha', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    k_value: kValue,
+                })
+            })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Captcha completed')
+                    ___grecaptcha_cfg.clients['0']['Z']['Z']['callback'](result)
+                    setTimeout(function () {
+                        window.location.href = "https://wayfarer.nianticlabs.com/new/review";
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.log('error')
+                    console.error(error);
+                });
+        }, 2000);
     };
 
 
@@ -394,7 +393,7 @@
             const response = this.response;
             const json = JSON.parse(response);
             if (!json) return;
-            if (json.captcha) return;
+            if (json.captcha) handleCaptcha();
             if (!json.result) return;
             callback(json.result, e);
         } catch (err) {
