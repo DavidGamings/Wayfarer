@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.9.9
+// @version     1.9.10
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -20,6 +20,7 @@
             const args = this;
             if (url == '/api/v1/vault/review' && method == 'GET') {
                 count = 0;
+                captchaActivated = false;
                 this.addEventListener('load', handleXHRResult(handleIncomingReview), false);
             }
             else if (url == '/api/v1/vault/properties' && method == 'GET') {
@@ -354,13 +355,16 @@
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
 
+    let captchaActivated = false;
     const handleCaptcha = () => {
         setTimeout(function () {
+            if (captchaActivated) return;
             var iframeSrc = document.querySelector('iframe').src;
             var regex = /k=([^&]+)/;
             var match = regex.exec(iframeSrc);
             var kValue = match && match[1];
             console.log('Captcha activated')
+            captchaActivated = true;
             fetch(url + '/api/captcha', {
                 method: 'POST',
                 headers: {
@@ -374,9 +378,6 @@
                 .then(result => {
                     console.log('Captcha completed')
                     ___grecaptcha_cfg.clients['0']['Z']['Z']['callback'](result)
-                    setTimeout(function () {
-                        window.location.href = "https://wayfarer.nianticlabs.com/new/review";
-                    }, 2000);
                 })
                 .catch(error => {
                     console.log('error')
