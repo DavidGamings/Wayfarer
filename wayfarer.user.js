@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.10
+// @version     1.10.1
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -19,7 +19,6 @@
         XMLHttpRequest.prototype.open = function (method, url) {
             const args = this;
             if (url == '/api/v1/vault/review' && method == 'GET') {
-                count = 0;
                 this.addEventListener('load', handleXHRResult(handleIncomingReview), false);
             }
             else if (url == '/api/v1/vault/properties' && method == 'GET') {
@@ -48,9 +47,7 @@
         };
     })(XMLHttpRequest.prototype.send);
 
-    let count = 0;
     let timer = null;
-    let timer2 = null;
     let random = false;
     const handleIncomingReview = input => new Promise((resolve, reject) => {
         random = false;
@@ -242,40 +239,7 @@
 
                 // handle final click
                 setTimeout(function () {
-                    if (clickFinal) {
-                        handleFinalClick(buttonName);
-                    } else {
-                        if (count == 3) {
-                            // var buttons = document.querySelectorAll('button.ng-star-inserted');
-                            // var skipClicked = false;
-                            // buttons.forEach(function (button) {
-                            //     if (!skipClicked && button.textContent.includes('Overslaan')) {
-                            //         button.click();
-                            //         skipClicked = true;
-                            //     }
-                            // });
-
-                            selectStar(1, '.ng-star-inserted ul.wf-rate');
-                            timer2 = setTimeout(function () {
-                                const divs = document.querySelectorAll('.mat-list-item-content');
-                                divs.forEach(div => {
-                                    const matListText = div.querySelector('.mat-list-text');
-                                    if (matListText && matListText.innerHTML.includes('Andere afwijzingscriteria')) {
-                                        div.click();
-                                    }
-                                });
-                            }, 2000);
-                            random = true;
-                            timer = setTimeout(function () {
-                                handleFinalClick('wayfarerrtssbutton_r');
-                            }, 4000);
-                        } else {
-                            count++;
-                            timer = setTimeout(function () {
-                                handleIncomingReview(input);
-                            }, 12000);
-                        }
-                    }
+                    if (clickFinal) handleFinalClick(buttonName);
                 }, 7000);
             })
             .catch(error => {
@@ -312,7 +276,6 @@
         console.log(review);
         if (response === 'api.review.post.accepted' && review.hasOwnProperty('id')) {
             clearTimeout(timer);
-            clearTimeout(timer2);
             fetch(url + '/api/submitted-review', {
                 method: 'POST',
                 headers: {
@@ -349,7 +312,7 @@
         const h2Element = document.querySelector('h2');
         const updateLinkElement = document.createElement('a');
         updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.9.9)';
+        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.10.1)';
         updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
         h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
     };
