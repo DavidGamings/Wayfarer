@@ -349,6 +349,8 @@
             .then(result => {
                 if (result === true) {
                     extraButtonElement.style.backgroundColor = 'green';
+                } else {
+                    extraButtonElement.style.backgroundColor = 'red';
                 }
                 console.log(result);
             })
