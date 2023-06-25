@@ -316,7 +316,7 @@
         const buttonContainer = document.createElement('div');
         
         // Create the update button
-        const updateButtonElement = document.createElement('button');
+        const updateButtonElement = document.createElement('a');
         
         updateButtonElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
         updateButtonElement.textContent = 'Update WayfarerApp (Huidige versie 1.10.1)';
