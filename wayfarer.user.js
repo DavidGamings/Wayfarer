@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.10.1
+// @version     1.11
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -52,6 +52,7 @@
     const handleIncomingReview = input => new Promise((resolve, reject) => {
         random = false;
         console.log(input);
+        //fetch(url + '/api/incoming-review?XDEBUG_SESSION_START=PHPSTORM', {
         fetch(url + '/api/incoming-review', {
             method: 'POST',
             headers: {
@@ -310,12 +311,61 @@
 
     const setUpdateButton = () => {
         const h2Element = document.querySelector('h2');
-        const updateLinkElement = document.createElement('a');
-        updateLinkElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateLinkElement.textContent = 'Update WayfarerApp (Huidige versie 1.10.1)';
-        updateLinkElement.className = 'wf-button wf-button--primary wf-button--large';
-        h2Element.parentNode.replaceChild(updateLinkElement, h2Element);
+        
+        // Create the container element to hold both buttons
+        const buttonContainer = document.createElement('div');
+        
+        // Create the update button
+        const updateButtonElement = document.createElement('button');
+        
+        updateButtonElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
+        updateButtonElement.textContent = 'Update WayfarerApp (Huidige versie 1.10.1)';
+        updateButtonElement.className = 'wf-button wf-button--primary wf-button--large';
+
+        // Create the extra button
+        const extraButtonElement = document.createElement('button');
+        extraButtonElement.textContent = 'Connect met wayfarerapp';
+        extraButtonElement.className = 'wf-button wf-button--secondary wf-button--large';
+        let cookieString = '';
+        GM.cookie.list({}).then(function (cookies) {
+            cookieString = cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; ');
+          
+            console.log(cookieString);
+          });
+        // Add click event listener to the extra button
+        extraButtonElement.addEventListener('click', () => {
+            // Send the POST request
+            fetch(url + '/api/set-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cookieString: cookieString,
+                    profile: profile,
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result === true) {
+                    extraButtonElement.style.backgroundColor = 'green';
+                }
+                console.log(result);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        });
+        
+        // Append both buttons to the button container
+        buttonContainer.appendChild(updateButtonElement);
+        buttonContainer.appendChild(extraButtonElement);
+        
+        // Replace the h2 element with the button container
+        h2Element.parentNode.replaceChild(buttonContainer, h2Element);
     };
+    
+    
 
     // Perform validation on result to ensure the request was successful before it's processed further.
     // If validation passes, passes the result to callback function.
