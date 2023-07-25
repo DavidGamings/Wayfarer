@@ -4,8 +4,8 @@
 // @version     1.11.1
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
-// @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
-// @updateURL   https://github.com/davidgamings/wayfarer/raw/main/wayfarer.meta.js
+// @downloadURL https://github.com/peetpoes/wayfarer/raw/main/wayfarer.user.js
+// @updateURL   https://github.com/peetpoes/wayfarer/raw/main/wayfarer.meta.js
 // @grant       GM.cookie
 // @run-at      document-start
 // ==/UserScript==
