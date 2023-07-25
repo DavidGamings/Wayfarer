@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.11
+// @version     1.11.1
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/davidgamings/wayfarer/raw/main/wayfarer.user.js
@@ -217,7 +217,7 @@
 
                     clickFinal = true;
                 } else {
-                    // handle photo 
+                    // handle photo
                     if (input.type == "PHOTO") {
                         setTimeout(function () {
                             document.querySelector('.photo-card__overlay').click();
@@ -298,40 +298,44 @@
         }
     });
 
+    let cookieString;
     // Get a user ID to properly handle browsers shared between several users. Store a hash only, for privacy.
     const handleProfile = ({ socialProfile }) => {
         profile = socialProfile;
-        GM.cookie.list({ name: 'SESSION' }).then(function (cookie) {
-            session = cookie[0].value;
-        });
-        GM.cookie.list({ name: 'XSRF-TOKEN' }).then(function (cookie) {
-            x_csrf_token = cookie[0].value;
+        GM.cookie.list({}).then(function (cookies) {
+            // Initialize an empty array to store the cookie strings
+            const cookieStrings = [];
+
+            // Iterate through each cookie and build the cookie string
+            for (const cookie of cookies) {
+                const cookieString = `${cookie.name}=${cookie.value}`;
+                cookieStrings.push(cookieString);
+            }
+
+            // Join the individual cookie strings using a semicolon and space
+            const finalCookieString = `${cookieStrings.join('; ')}`;
+
+            cookieString = finalCookieString;
         });
     };
 
     const setUpdateButton = () => {
         const h2Element = document.querySelector('h2');
-        
+
         // Create the container element to hold both buttons
         const buttonContainer = document.createElement('div');
-        
+
         // Create the update button
         const updateButtonElement = document.createElement('a');
-        
-        updateButtonElement.href = 'https://github.com/DavidGamings/Wayfarer/raw/main/wayfarer.user.js';
-        updateButtonElement.textContent = 'Update WayfarerApp (Huidige versie 1.11)';
+
+        updateButtonElement.href = 'https://github.com/peetpoes/Wayfarer/raw/main/wayfarer.user.js';
+        updateButtonElement.textContent = 'Update WayfarerApp (Huidige versie 1.11.1)';
         updateButtonElement.className = 'wf-button wf-button--primary wf-button--large';
 
         // Create the extra button
         const extraButtonElement = document.createElement('button');
         extraButtonElement.textContent = 'Connect met wayfarerapp';
         extraButtonElement.className = 'wf-button wf-button--secondary wf-button--large';
-        let cookieString = '';
-        GM.cookie.list({}).then(function (cookies) {
-            cookieString = cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; ');
-          
-            console.log(cookieString);
-          });
         // Add click event listener to the extra button
         extraButtonElement.addEventListener('click', () => {
             // Send the POST request
@@ -345,29 +349,29 @@
                     profile: profile,
                 })
             })
-            .then(response => response.json())
-            .then(result => {
-                if (result === true) {
-                    extraButtonElement.style.backgroundColor = 'green';
-                } else {
-                    extraButtonElement.style.backgroundColor = 'red';
-                }
-                console.log(result);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+                .then(response => response.json())
+                .then(result => {
+                    if (result === true) {
+                        extraButtonElement.style.backgroundColor = 'green';
+                    } else {
+                        extraButtonElement.style.backgroundColor = 'red';
+                    }
+                    console.log(result);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         });
-        
+
         // Append both buttons to the button container
         buttonContainer.appendChild(updateButtonElement);
         buttonContainer.appendChild(extraButtonElement);
-        
+
         // Replace the h2 element with the button container
         h2Element.parentNode.replaceChild(buttonContainer, h2Element);
     };
-    
-    
+
+
 
     // Perform validation on result to ensure the request was successful before it's processed further.
     // If validation passes, passes the result to callback function.
