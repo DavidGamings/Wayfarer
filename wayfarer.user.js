@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WayfarerApp
 // @namespace   example
-// @version     1.11.1
+// @version     1.12.0
 // @description WayfarerApp
 // @match       https://wayfarer.nianticlabs.com/*
 // @downloadURL https://github.com/peetpoes/wayfarer/raw/main/wayfarer.user.js
@@ -11,7 +11,7 @@
 // ==/UserScript==
 
 (() => {
-    const url = 'https://wayfarerapp.nl';
+    const url = 'https://wayfarer.test';
     let profile = null;
     let session = null;
     let x_csrf_token = null;
