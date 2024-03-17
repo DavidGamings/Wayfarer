@@ -329,7 +329,7 @@
         const updateButtonElement = document.createElement('a');
 
         updateButtonElement.href = 'https://github.com/peetpoes/Wayfarer/raw/main/wayfarer.user.js';
-        updateButtonElement.textContent = 'Update WayfarerApp (Huidige versie 1.11.1)';
+        updateButtonElement.textContent = 'Update WayfarerApp (Huidige versie 1.12.0)';
         updateButtonElement.className = 'wf-button wf-button--primary wf-button--large';
 
         // Create the extra button
